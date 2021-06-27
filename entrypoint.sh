@@ -11,12 +11,6 @@ readonly tmpfile="$(mktemp)"
 # shellcheck disable=SC2064
 trap "rm -f ${tmpfile}" 0
 
-# Basic command line parsing:
-if [[ $# -ne 2 ]]; then
-  echo >&2 "Use: program [check_all_files{0|1}] [source_dir]"
-  exit 1
-fi
-
 readonly source_dir="${INPUT_SOURCE_DIRECTORY:-.}"
 readonly pr_number="${INPUT_PR_NUMBER:-}"
 check_all_files="${INPUT_CHECK_ALL_FILES:-0}"
