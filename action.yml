@@ -1,0 +1,25 @@
+me: check-trailing-spaces
+author: marcopaganini
+description: "Check for text files containing lines with trailing spaces."
+
+branding:
+  icon: file-text
+  color: gray-dark
+
+runs:
+  using: "docker"
+  image: "Dockerfile"
+  args:
+    - ${{ inputs.check_all_files }}
+    - ${{ inputs.source_directory }}
+
+inputs:
+  check_all_files:
+    description: Check all files, not only those changed by the PR.
+    required: false
+    default: "0"
+
+  source_directory:
+    description: Directory to check (overrides current directory).
+    required: false
+    default: "."
