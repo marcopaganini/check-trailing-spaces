@@ -9,9 +9,6 @@ branding:
 runs:
   using: "docker"
   image: "Dockerfile"
-  args:
-    - ${{ inputs.check_all_files }}
-    - ${{ inputs.source_directory }}
 
 inputs:
   check_all_files:
@@ -23,3 +20,8 @@ inputs:
     description: Directory to check (overrides current directory).
     required: false
     default: "."
+
+  pr_number:
+    description: The PR number to check.
+    required: false
+    default: ${{ github.event.pull_request.number }}

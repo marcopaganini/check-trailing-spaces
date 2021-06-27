@@ -17,6 +17,9 @@ that contains lines with trailing spaces.
 * `source_directory`: When `check_all_files` is set, use this directory as
    the root of the tree to be checked, instead of the Git repository root.
 
+* `pr_number`: The number of the PR to check. There's usually no need to
+   change this. The default is the current PR number.
+
 ## Example
 
 **.github/workflows/main.yml**
@@ -27,9 +30,6 @@ on: [push]
 jobs:
   example-workflow:
     name: Example workflow using the check-trailing-spaces action.
-
-  env:
-    PR_NUMBER: ${{ github.event.pull_request.number }}
 
   steps:
     - name: Checkout repository contents.

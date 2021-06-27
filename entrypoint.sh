@@ -17,27 +17,26 @@ if [[ $# -ne 2 ]]; then
   exit 1
 fi
 
-readonly source_dir="${2}"
-check_all_files="${1}"
+readonly source_dir="${INPUT_SOURCE_DIRECTORY:-.}"
+readonly pr_number="${INPUT_PR_NUMBER:-}"
+check_all_files="${INPUT_CHECK_ALL_FILES:-0}"
 
 echo "Check for trailing spaces inside text files"
 echo "==========================================="
 
-# If PR_NUMBER is not defined, assume we want to check all files
+# If pr_number is not defined, assume we want to check all files
 # (We need the indirection below to be able to use set -o nounset).
-pr=${PR_NUMBER:-}
-if [[ -z "${pr}" ]]; then
-  echo -e "Note: The PR_NUMBER environment variable is not set. Checking all files.\n"
+if [[ -z "${pr_number}" ]]; then
+  echo -e "Note: The INPUT_PR_NUMBER environment variable is not set. Checking all files.\n"
   check_all_files=1
 fi
 
-# Check arguments (argv[1] exists and is not null)
-# This matches the check_all_files parameter in action.yml
+# Note: source_dir is ignored unless check_all_files is set.
 if (( check_all_files )); then
   find "${source_dir}" -name .git -type d -prune -o -type f -print | sort >"${CHANGED_FILES}"
 else
   # Retrieve list of changes files.
-  URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/files"
+  URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${pr_number}/files"
   curl -s -X GET -G "${URL}" | jq -r '.[] | .filename' > "${CHANGED_FILES}"
 fi
 
