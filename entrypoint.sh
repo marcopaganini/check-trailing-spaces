@@ -1,11 +1,13 @@
 #!/bin/bash
 # Exit with an error code if the current commit contains files with
 # lines having spaces or tabs at EOL.
-
-CHANGED_FILES="${HOME}/changed_files.txt"
+#
+# Jun/2021 by Marco Paganini <paganini@paganini.net>
 
 set -o errexit
 set -o nounset
+
+CHANGED_FILES="${HOME}/changed_files.txt"
 
 readonly tmpfile
 tmpfile="$(mktemp)"
@@ -53,11 +55,9 @@ if [[ -s "${tmpfile}" ]]; then
     fname=$(echo "${line}" | cut -d: -f1)
     linenum=$(echo "${line}" | cut -d: -f2)
     echo "${fname}:${linenum}: Line contains trailing whitespaces."
-    # TODO(investigate why this prints no file or linenumber)
-    #echo "::error file=${fname},line=${linenum}::Line contains trailing whitespaces."
   done < "${tmpfile}"
   exit 1
 fi
 
-echo "Test successful"
+echo "Test successful."
 exit 0
