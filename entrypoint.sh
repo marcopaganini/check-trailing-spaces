@@ -7,7 +7,8 @@ CHANGED_FILES="${HOME}/changed_files.txt"
 set -o errexit
 set -o nounset
 
-readonly tmpfile="$(mktemp)"
+readonly tmpfile
+tmpfile="$(mktemp)"
 # shellcheck disable=SC2064
 trap "rm -f ${tmpfile}" 0
 
