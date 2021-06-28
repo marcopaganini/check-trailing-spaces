@@ -12,17 +12,18 @@ tmpfile="$(mktemp)"
 # shellcheck disable=SC2064
 trap "rm -f ${tmpfile}" 0
 
+# Read and process INPUT_* and other global variables.
 readonly source_dir="${INPUT_SOURCE_DIRECTORY:-.}"
 readonly pr_number="${INPUT_PR_NUMBER:-}"
+readonly github_repository=${GITHUB_REPOSITORY:-}
 check_all_files="${INPUT_CHECK_ALL_FILES:-0}"
 
 echo "Check for trailing spaces inside text files"
 echo "==========================================="
 
-# If pr_number is not defined, assume we want to check all files
-# (We need the indirection below to be able to use set -o nounset).
-if [[ -z "${pr_number}" ]]; then
-  echo -e "Note: The INPUT_PR_NUMBER environment variable is not set. Checking all files.\n"
+# If pr_number or github_repository are empty, check all files.
+if [[ -z "${pr_number}" ]] || [[ -z "${github_repository}" ]]; then
+  echo -e "Note: INPUT_PR_NUMBER or GITHUB_REPOSITORY not set. Checking all files.\n"
   check_all_files=1
 fi
 
