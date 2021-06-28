@@ -1,0 +1,17 @@
+name: Code tests
+on: [push, pull_request]
+
+jobs:
+  code-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - name: Check files containing lines with trailing spaces or tabs
+        uses: marcopaganini/check-trailing-spaces@v0
+
+      - name: ShellCheck
+        uses: ludeeus/action-shellcheck@1.1.0
