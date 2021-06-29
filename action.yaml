@@ -1,4 +1,4 @@
-me: check-trailing-spaces
+name: check-trailing-spaces
 author: marcopaganini
 description: "Check for text files containing lines with trailing spaces."
 
