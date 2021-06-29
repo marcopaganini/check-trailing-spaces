@@ -9,7 +9,6 @@ set -o nounset
 
 CHANGED_FILES="${HOME}/changed_files.txt"
 
-readonly tmpfile
 tmpfile="$(mktemp)"
 # shellcheck disable=SC2064
 trap "rm -f ${tmpfile}" 0
