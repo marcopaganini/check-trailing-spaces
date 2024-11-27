@@ -52,12 +52,11 @@ jobs:
 
   steps:
     - name: Checkout repository contents.
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2.0.0
 
     - name: Check lines in files for trailing whitespaces.
       uses: marcopaganini/check-trailing-spaces@v1
-
-    - with: # Most people won't need this.
+      with:
         check_all_files: 1
         source_directory: /ext
 ```
