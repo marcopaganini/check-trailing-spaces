@@ -1,6 +1,6 @@
 name: check-trailing-spaces
 author: marcopaganini
-description: "Check for text files containing lines with trailing spaces."
+description: "Check files for trailing spaces, empty lines at EOF and missing newline at EOF."
 
 branding:
   icon: file-text
@@ -15,6 +15,21 @@ inputs:
     description: Check all files, not only those changed by the PR.
     required: false
     default: "0"
+
+  check_empty_line_at_eof:
+    description: Make sure the last line in a file is not empty.
+    required: false
+    default: "1"
+
+  check_missing_newline_at_eof:
+    description: Make sure the last line in the file ends in a newline character.
+    required: false
+    default: "1"
+
+  ignore_regex:
+    description: Ignore files matching this regular expression (full path, see man find, -regex).
+    required: false
+    default: ""
 
   source_directory:
     description: Directory to check (overrides current directory).
