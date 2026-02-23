@@ -40,3 +40,15 @@ inputs:
     description: The PR number to check.
     required: false
     default: ${{ github.event.pull_request.number }}
+
+  token:
+    description: GitHub token used to authenticate API requests. Defaults to the built-in GITHUB_TOKEN.
+    required: false
+    default: ${{ github.token }}
+
+  changed_files:
+    description: >
+      A newline-separated list of files to check. When provided, skips the GitHub API call entirely.
+      Useful for private repositories or when you already have the list of changed files.
+    required: false
+    default: ""

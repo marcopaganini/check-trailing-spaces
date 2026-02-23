@@ -39,6 +39,16 @@ that contains one of the following conditions:
 * `pr_number`: The number of the PR to check. There's usually no need to
   change this. The default is the current PR number.
 
+* `token`: GitHub token used to authenticate API requests when fetching the
+  list of changed files. Defaults to the built-in `GITHUB_TOKEN`. Supply a
+  custom token (e.g. a PAT with `repo` scope) when running against private
+  repositories or when the default token lacks sufficient permissions.
+
+* `changed_files`: A newline-separated list of files to check. When provided,
+  the GitHub API call is skipped entirely. This is useful for private
+  repositories or when you already have the list of changed files from another
+  step.
+
 ## Example
 
 **.github/workflows/main.yml**
