@@ -20,6 +20,8 @@ readonly check_empty_line_at_eof="${INPUT_CHECK_EMPTY_LINE_AT_EOF:-1}"
 readonly check_missing_newline_at_eof="${INPUT_CHECK_MISSING_NEWLINE_AT_EOF:-1}"
 readonly ignore_regex="${INPUT_IGNORE_REGEX:-}"
 readonly github_repository=${GITHUB_REPOSITORY:-}
+readonly token="${INPUT_TOKEN:-}"
+readonly input_changed_files="${INPUT_CHANGED_FILES:-}"
 check_all_files="${INPUT_CHECK_ALL_FILES:-0}"
 
 function is_text_file() {
@@ -32,8 +34,11 @@ function main() {
   echo "Check for trailing spaces inside text files"
   echo "==========================================="
 
+  # If a list of changed files was provided directly, use it and skip the API call.
+  if [[ -n "${input_changed_files}" ]]; then
+    echo "${input_changed_files}" > "${CHANGED_FILES}"
   # If pr_number or github_repository are empty, check all files.
-  if [[ -z "${pr_number}" ]] || [[ -z "${github_repository}" ]]; then
+  elif [[ -z "${pr_number}" ]] || [[ -z "${github_repository}" ]]; then
     echo -e "Note: INPUT_PR_NUMBER or GITHUB_REPOSITORY not set. Checking all files.\n"
     check_all_files=1
   fi
@@ -49,7 +54,9 @@ function main() {
   else
     # Retrieve list of changes files.
     URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${pr_number}/files"
-    curl -s -X GET -G "${URL}" | jq -r '.[] | .filename' > "${CHANGED_FILES}"
+    curl -s -X GET -G \
+      ${token:+-H "Authorization: Bearer ${token}"} \
+      "${URL}" | jq -r '.[] | .filename' > "${CHANGED_FILES}"
   fi
 
   while read -r fname; do
